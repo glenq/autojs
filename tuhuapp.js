@@ -5,6 +5,7 @@
 #途虎App签到
 10 6 * * * https://github.com/glenq/autotask/tuhuapp.js, tag=中庚签到, enabled=true
 
+TuhuApp=auth#userid@auth#userid
  */
 const $ = new Env('途虎App签到');
 
@@ -23,9 +24,11 @@ let userUA = 'Dalvik/2.1.0 (Linux; U; Android 7.1.2; MI 6X Build/N6F26Q) tuhuAnd
 
 !(async () => {
     if(userCookie) {
-        for(let auth of userCookie.split('@')) {
-            if(auth){
-                await doSign(auth);
+        for(let ck of userCookie.split('@')) {
+            if(ck){
+		let ckdata = ck.split('#')
+                await doSign(ckdata[0], ckdata[1]);
+		await getUserScore(ckdata[0], ckdata[1]);
                 console.log(`\n【访问接口，休息1秒.....】\n`);
 		        await $.wait(1000);
             }
@@ -44,11 +47,11 @@ let userUA = 'Dalvik/2.1.0 (Linux; U; Android 7.1.2; MI 6X Build/N6F26Q) tuhuAnd
         $.done();
     })
 
-async function doSign(auth) {
+async function doSign(auth,userid) {
     try {
         let url = `https://api.tuhu.cn/User/UserCheckInVersion1`
         
-        let urlObject = populateUrlObject(url, auth)
+        let urlObject = populateUrlObject(url, auth, userid)
         await httpRequest('get', urlObject)
         let result = httpResult;
         if(!result) return
@@ -66,7 +69,29 @@ async function doSign(auth) {
     }
 }
 
-function populateUrlObject(url, authorization,body=''){
+async function getUserScore(auth, userid) {
+    try {
+        let url = `https://api.tuhu.cn/User/SelectUserIntegralByUserId?userId=${userid}`
+        
+        let urlObject = populateUrlObject(url, auth, userid)
+        await httpRequest('get', urlObject)
+        let result = httpResult;
+        if(!result) return
+        if (result.Code == "1"){
+            let msg = `途虎App积分查询成功，结果：${JSON.stringify(result)}\n`
+            notifyStr += msg
+            console.log(msg)
+        }else {
+            let msg = `途虎App积分查询失败，错误数据：${JSON.stringify(result)}\n`
+            notifyStr += msg
+            console.log(msg)
+        }
+    } catch (e) {
+        $.logErr(e)
+    }
+}
+
+function populateUrlObject(url, authorization, userid,body=''){
     let urlObject = {
         url: url,
         headers: {
@@ -75,7 +100,7 @@ function populateUrlObject(url, authorization,body=''){
             'authorization' : `Bearer ${authorization}`,
             'api_level' : '2',
             'User-Agent' : userUA,
-            'distinct_id':'f09b94fb-391b-ea29-47ac-f9678d427c46',
+            'distinct_id': userid,
             'channel':'_xiaomi',
             'deviceid': 'b43809b7-ce2a-3a71-a9ce-3bd3516b7896',
             'black_box':'eyJvcyI6ImFuZHJvaWQiLCJ2ZXJzaW9uIjoiMy4zLjQiLCJwYWNrYWdlcyI6ImNuLlR1SHUuYW5kcm9pZComNi4yOC41IiwicHJvZmlsZV90aW1lIjoyMDMsImludGVydmFsX3RpbWUiOjMsInRva2VuX2lkIjoia0VQd0xiYStjU2ozS3o1cVFBVUlzN0RYQjh3ZVdjZXgwZmJBaDF4NWx0UUZVdk9zVGFXM21cL0RBaktXSlNxaDk1TExnbml5RWlZUmt4OTNTTGwzajVBPT0ifQ==',
