@@ -56,7 +56,7 @@ async function doSign(auth,userid) {
         let result = httpResult;
         if(!result) return
         if (result.Code == "1"){
-            let msg = `途虎App签到成功，结果：${JSON.stringify(result)}\n`
+            let msg = `途虎App签到成功，今日奖励积分：${result.AddIntegral}\n`
             notifyStr += msg
             console.log(msg)
         }else {
@@ -78,7 +78,7 @@ async function getUserScore(auth, userid) {
         let result = httpResult;
         if(!result) return
         if (result.Code == "1"){
-            let msg = `途虎App积分查询成功，结果：${JSON.stringify(result)}\n`
+            let msg = `途虎App积分查询成功，总积分：${result.UserIntegral}\n`
             notifyStr += msg
             console.log(msg)
         }else {
