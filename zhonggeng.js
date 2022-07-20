@@ -54,7 +54,7 @@ async function doSign(userid) {
         let result = httpResult;
         if(!result) return
         if (result.resCode == 10024){
-            let msg = `中庚签到成功，结果：${JSON.stringify(result)}\n`
+            let msg = `${userid}-中庚签到成功，今日积分：${result.data.totalPointsDay}\n`
             notifyStr += msg
             console.log(msg)
         }else {
