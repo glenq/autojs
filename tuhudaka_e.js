@@ -53,7 +53,7 @@ console.log(singDate)
             await notify.sendNotify(`${$.name}`, `${notifyStr}`)
         }
     } else {
-        console.log('未找到tuhuSession')
+        console.log('未找到tuhuSessionE')
     }
 })()
     .catch((e) => {
