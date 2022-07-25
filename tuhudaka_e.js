@@ -43,8 +43,8 @@ console.log(singDate)
         if(daytype === 0){
             await doSign(sessionid);
         }else{
-            console.log('非工作日，检查一次');
-            notifyStr += '非工作日，检查一次'
+            console.log('【Early脚本】非工作日，检查一次');
+            notifyStr += '【Early脚本】非工作日，检查一次'
         }
 		await $.wait(1000);
             }
@@ -72,11 +72,11 @@ async function doSign(sessionid) {
         let result = httpResult;
         if(!result) return
         if (result.code === 0){
-            let msg = `途虎签到成功，签到时间：${result.data.attendance_time}\n`
+            let msg = `【Early脚本】途虎签到成功，签到时间：${result.data.attendance_time}\n`
             notifyStr += msg
             console.log(msg)
         }else {
-            let msg = `途虎签到失败，错误数据：${JSON.stringify(result)}\n`
+            let msg = `【Early脚本】途虎签到失败，错误数据：${JSON.stringify(result)}\n`
             notifyStr += msg
             console.log(msg)
         }
@@ -95,10 +95,10 @@ async function doReport(sessionid){
         let result = httpResult;
         if(!result) return
         if (result.code === 0){
-            let msg = `途虎日报，结果：${JSON.stringify(result)}\n`
+            let msg = `【Early脚本】途虎日报，结果：${JSON.stringify(result)}\n`
             console.log(msg)
         }else {
-            let msg = `途虎日报，错误数据：${JSON.stringify(result)}\n`
+            let msg = `【Early脚本】途虎日报，错误数据：${JSON.stringify(result)}\n`
             notifyStr += msg
             console.log(msg)
         }
@@ -115,11 +115,11 @@ await httpRequest('get', urlObject)
  let result = httpResult;
         if(!result) return
           if (result.code === 0){
-            let msg = `工作日查询，结果：${JSON.stringify(result)}\n`;
+            let msg = `【Early脚本】工作日查询，结果：${JSON.stringify(result)}\n`;
             daytype = result.type.type;
             console.log(msg)
         }else {
-            let msg = `工作日查询，错误数据：${JSON.stringify(result)}\n`
+            let msg = `【Early脚本】工作日查询，错误数据：${JSON.stringify(result)}\n`
             
             console.log(msg)
         }
