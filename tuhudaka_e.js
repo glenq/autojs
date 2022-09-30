@@ -13,8 +13,8 @@ const logDebug = 0
 
 const notify = $.isNode() ? require('./sendNotify') : '';
 let notifyStr = ''
-let userReferer = 'https://tuhu.peoplus.cn'
-let userHost = 'tuhu.peoplus.cn'
+let userReferer = ''
+let userHost = ''
 let httpResult //global buffer
 
 let userCookie = ($.isNode() ? process.env.tuhuSessionE : $.getdata('tuhuSessionE')) || '';
@@ -65,7 +65,7 @@ console.log(singDate)
 
 async function doSign(sessionid) {
     try {
-        let url = `https://tuhu.peoplus.cn/mjson/hr.attendance/stateless_auto_sign_in`
+        let url = ``
         let body = `{"identication":{"linkid":"","app_channel":"wx","session_id":"${sessionid}","language":"zh_CN","version":"2.4.0","type":"session","info":{"systemVersion":"9.1","systemModel":"PC"}},"data":{"cur_latitude":31.135948405427516,"cur_longitude":121.40191588248116,"beaconArray":[],"gps_attendance_id":22261,"gps_address":"上海市闵行区万源路18号-1","context":{"submit_times":0}}}`
         let urlObject = populateUrlObject(url,sessionid, body)
         await httpRequest('post', urlObject)
@@ -88,7 +88,7 @@ async function doSign(sessionid) {
 async function doReport(sessionid){
       try {
       
-        let url = `https://tuhu.peoplus.cn/mjson/hr.attendance/app_day_time_report`
+        let url = ``
         let body = `{"identication":{"linkid":"","app_channel":"wx","session_id":"${sessionid}","language":"zh_CN","version":"2.4.0","type":"session","info":{"systemVersion":"9.1","systemModel":"PC"}},"data":{"date":"${singDate}"}}`
         let urlObject = populateUrlObject(url,sessionid, body)
         await httpRequest('post', urlObject)
